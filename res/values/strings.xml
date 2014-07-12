@@ -4,6 +4,8 @@
     <string name="app_name">Nittapp</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_event_details">EventDetails</string>
+    <string name="title_activity_event_db">EventDBActivity</string>
+    <string name="title_activity_temp">TempActivity</string>
+    <string name="title_activity_alarm_receiver">AlarmReceiver</string>
 
 </resources>
