@@ -7,5 +7,6 @@
     <string name="title_activity_event_db">EventDBActivity</string>
     <string name="title_activity_temp">TempActivity</string>
     <string name="title_activity_alarm_receiver">AlarmReceiver</string>
-
+	<string name="title_activity_event_details">EventDetails</string>
+    
 </resources>
