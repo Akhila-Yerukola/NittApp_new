@@ -41,14 +41,18 @@
             android:name="com.example.nittapp.EventDetails"
             android:label="@string/title_activity_event_details" >
         </activity>
-        
-        <receiver android:name=".AlarmReceiver" >
+
+        <receiver android:name="com.example.nittapp.AlarmReceiver" >
         </receiver>
 
         <service
-            android:name="NotificationService"
+            android:name="com.example.nittapp.NotificationService"
             android:enabled="true" />
-        
+
+        <activity
+            android:name="com.example.nittapp.ClusterActivity"
+            android:label="@string/title_activity_cluster" >
+        </activity>
     </application>
 
 </manifest>

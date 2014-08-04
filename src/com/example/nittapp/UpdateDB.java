@@ -13,12 +13,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class UpdateDB {
 	
-	public static final String KEY_DATE = "_date";
-	public static final String KEY_NAME = "_name";
-	public static final String KEY_TIME = "_time";
-	public static final String KEY_DESC = "_desc";
-	public static final String KEY_VENUE = "_venue";
-	
+	public static final String KEY_TEXT = "_text";
+		
 	private static final String DATABASE_NAME = "MyUpdateDb.db";
 	private static final String DATABASE_TABLE = "Updates1";
 	private static final int DATABASE_VERSION = 1;
@@ -38,9 +34,8 @@ public class UpdateDB {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			// TODO Auto-generated method stub
-			db.execSQL("CREATE TABLE " + DATABASE_TABLE + "(" + KEY_NAME
-					+ " TEXT NOT NULL, " + KEY_DATE + " TEXT, " + KEY_TIME + " TEXT, "+
-					KEY_VENUE + " TEXT, " + KEY_DESC + " TEXT);");
+			db.execSQL("CREATE TABLE " + DATABASE_TABLE + "(" + KEY_TEXT
+					+ " TEXT " + ")");
 			// db.execSQL("create table MyEvents(_event text not null, _date text, _time text, _priority varchar(10));");
 
 		}
@@ -69,17 +64,12 @@ public class UpdateDB {
 		ourHelper.close();
 	}
 
-	public long createEntry(String name, String date, String desc,
-			String venue,String time) {
+	public long createEntry(String name) {
 		// TODO Auto-generated method stub
 
 		ContentValues cv = new ContentValues();
-		cv.put(KEY_NAME, name);
-		cv.put(KEY_DATE, date);
-		cv.put(KEY_TIME, time);
-		cv.put(KEY_DESC, desc);
-		cv.put(KEY_VENUE, venue);
-		
+		cv.put(KEY_TEXT, name);
+				
 		return ourDatabase.insert(DATABASE_TABLE, null, cv);
 
 	}
@@ -88,29 +78,18 @@ public class UpdateDB {
 	public List getData() {
 		// TODO Auto-generated method stub
 		List <HashMap<String,String>>docList = new ArrayList<HashMap<String,String>>();
-		String[] columns = new String[] { KEY_NAME, KEY_DATE, KEY_VENUE, KEY_DESC, KEY_TIME };
+		String[] columns = new String[] { KEY_TEXT };
 		
 		Cursor c = ourDatabase.query(DATABASE_TABLE, columns, null, null, null,
 				null, null);
 		String result = "";
 		System.out.println("no of records: " + c.getCount());
-		int iEvent = c.getColumnIndex(KEY_NAME);
-		int iDate = c.getColumnIndex(KEY_DATE);
-		int iTime = c.getColumnIndex(KEY_TIME);
-		int iDesc = c.getColumnIndex(KEY_DESC);
-		int iVenue = c.getColumnIndex(KEY_VENUE);
+		int iEvent = c.getColumnIndex(KEY_TEXT);
 		
-
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 			
 			HashMap temp = new HashMap();
-			temp.put("name", c.getString(iEvent).toUpperCase());
-			temp.put("date", c.getString(iDate));
-			temp.put("time", c.getString(iTime));
-			temp.put("desc", c.getString(iDesc));
-			temp.put("venue", c.getString(iVenue));
-			
-			
+			temp.put("text", c.getString(iEvent).toUpperCase());
 			docList.add(temp);
 
 		}
@@ -126,8 +105,8 @@ public class UpdateDB {
 
 	public Cursor getDetails(String eventName) {
 		// TODO Auto-generated method stub
-		String[] columns = new String[] { KEY_NAME, KEY_DATE, KEY_VENUE };
-		Cursor m = ourDatabase.query(DATABASE_TABLE, columns, "_name='" + eventName + "'", null, null, null, null);
+		String[] columns = new String[] { KEY_TEXT};
+		Cursor m = ourDatabase.query(DATABASE_TABLE, columns, "_text='" + eventName + "'", null, null, null, null);
 		return m;
 	}
 	

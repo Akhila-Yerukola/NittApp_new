@@ -40,11 +40,12 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	ListView eventsList, updatesList;
-	static int orgid, clusterid;
+	static int  clusterid;
+	static String orgname=null;
 	static int lengthOfUpdates=0;
 	static int page_no = 1;
 
-	String Uname,Udate,Udesc,Uvenue,Utime;
+	String Utext,Udate,Udesc,Uvenue,Utime;
 	LoadDataUpdates updates;
 	LoadDataEvents event;
 	ArrayAdapter<String> adapter1;
@@ -121,28 +122,13 @@ public class MainActivity extends Activity {
 		public void onItemClick(AdapterView<?> arg0, View arg1,
 				int position, long arg3) {
 			// TODO Auto-generated method stub
-			if (page_no == 1){
-				orgid = position + 1;
-				page_no++;
-			}
-			else if (page_no == 2) {
-				events.open();
-				Log.e("name of clicked position",
-						listForEvents.get(position));
-				clusterid = events.getClusterId(listForEvents.get(position));
-				events.close();
-				page_no++;
-			}
-			else{
-				events.open();
-				Intent intent=new Intent(MainActivity.this, EventDetails.class);
-				intent.putExtra("EventId",events.getEventId(listForEvents.get(position)) );
-				startActivity(intent);
-				events.close();
-			}
-
 			
-			setList();
+				orgname=listForEvents.get(position);
+				//page_no++;
+				Intent i= new Intent(MainActivity.this,ClusterActivity.class);
+				i.putExtra("orgname", orgname);
+				startActivity(i);
+			
 
 		}
 	});
@@ -161,23 +147,10 @@ public class MainActivity extends Activity {
 					android.R.layout.simple_list_item_1, listForEvents));
 			break;
 
-		case 2:
-			listForEvents = events.getClusters(orgid + "");
-			eventsList.setAdapter(new ArrayAdapter<String>(MainActivity.this,
-					android.R.layout.simple_list_item_1, listForEvents));
-			break;
-		case 3:
-			listForEvents = events.getEvents(clusterid + "");
-			eventsList.setAdapter(new ArrayAdapter<String>(MainActivity.this,
-					android.R.layout.simple_list_item_1, listForEvents));
-			Log.e("Setting events", "yayy");
-			break;
-
 		}
 		events.close();
 
 	}
-
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -261,20 +234,12 @@ public class MainActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// Inflate the layout, mainlvitem.xml, in each row.
 			LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-			View row1 = inflater.inflate(R.layout.row, parent, false);
+			View row1 = inflater.inflate(R.layout.rowupdates, parent, false);
 			// Log.d("ADAPT", Integer.toString(cnt++));
 
-			TextView item = (TextView) row1.findViewById(R.id.Name);
-			item.setText(list_of_updates.get(position).get("name"));
-			//
-			TextView item1 = (TextView) row1.findViewById(R.id.By);
-			item1.setText(list_of_updates.get(position).get("date"));
-			//
-
-			//
-			TextView item3 = (TextView) row1.findViewById(R.id.Venue);
-			item3.setText(list_of_updates.get(position).get("venue"));
-
+			TextView item = (TextView) row1.findViewById(R.id.tvText);
+			item.setText(list_of_updates.get(position).get("text"));
+			
 			return row1;
 		}
 
@@ -304,7 +269,7 @@ public class MainActivity extends Activity {
 		private static final String TAG_DESC = "desc";
 		private static final String TAG_VENUE = "venue";
 		private static final String TAG_DELETE = "delete";
-		private static final String TAG_ORGANISATIONID = "orgid";
+		private static final String TAG_ORGANISATIONNAME = "orgname";
 		private static final String TAG_EVENTID = "eventid";
 		private static final String TAG_CLUSTERID = "clusterid";
 		private static final String TAG_CLUSTERNAME = "clustername";
@@ -386,7 +351,7 @@ public class MainActivity extends Activity {
 					String Etime = obj.getString(TAG_TIME);
 					String Edesc = obj.getString(TAG_DESC);
 					String Evenue = obj.getString(TAG_VENUE);
-					String Eorg = obj.getString(TAG_ORGANISATIONID);
+					String Eorg = obj.getString(TAG_ORGANISATIONNAME);
 					String Eclusterid = obj.getString(TAG_CLUSTERID);
 					String Eclustername = obj.getString(TAG_CLUSTERNAME);
 					String Eeventid = obj.getString(TAG_EVENTID);
@@ -424,11 +389,8 @@ public class MainActivity extends Activity {
 	
 	public class LoadDataUpdates extends AsyncTask<String, Void, String> {
 
-		private static final String TAG_NAME = "name";
-		private static final String TAG_DATE = "date";
-		private static final String TAG_TIME = "time";
-		private static final String TAG_DESC = "desc";
-		private static final String TAG_VENUE = "venue";
+		private static final String TAG_TEXT = "text";
+		
 		/*
 		 * private static final String TAG_LAT = "lat"; private static final
 		 * String TAG_PIC = "pic"; private static final String TAG_LNG = "lng";
@@ -501,15 +463,12 @@ public class MainActivity extends Activity {
 				int i;
 				for (i = 0; i < contacts.length(); i++) {
 					JSONObject obj = contacts.getJSONObject(i);
-					Uname = obj.getString(TAG_NAME);
-					Udate = obj.getString(TAG_DATE);
-					Utime = obj.getString(TAG_TIME);
-					Udesc = obj.getString(TAG_DESC);
-					Uvenue = obj.getString(TAG_VENUE);
+					Utext = obj.getString(TAG_TEXT);
 					
-					uname.add(i, Uname);
+					
+					uname.add(i, Utext);
 					if(i>=lengthOfUpdates){
-					update.createEntry(Uname, Udate, Udesc, Uvenue,Utime);}
+					update.createEntry(Utext);}
 					// Log.e("name", ename.get(i));
 				}
 				lengthOfUpdates = i;
@@ -523,7 +482,7 @@ public class MainActivity extends Activity {
 			update.close();
 			Log.e("length", list_of_updates.size() + "");
 			ArrayAdapter<String> adapter1 = new MyCustomAdapterUpdate(
-					MainActivity.this, R.layout.row, uname);
+					MainActivity.this, R.layout.rowupdates, uname);
 			updatesList.setAdapter(adapter1);
 			//Log.e("hema ", "akhila");
 

@@ -19,7 +19,7 @@ public class EventDb {
 	public static final String KEY_TIME = "_time";
 	public static final String KEY_DESC = "_desc";
 	public static final String KEY_VENUE = "_venue";
-	public static final String KEY_ORGANISATIONID = "_orgid";
+	public static final String KEY_ORGANISATIONNAME = "_orgname";
 	public static final String KEY_EVENTID = "_eventid";
 	public static final String KEY_CLUSTERID = "_clusterid";
 	public static final String KEY_CLUSTERNAME = "_clustername";
@@ -50,7 +50,7 @@ public class EventDb {
 			// TODO Auto-generated method stub
 			db.execSQL("CREATE TABLE " + DATABASE_TABLE + "(" + KEY_NAME
 					+ " TEXT NOT NULL, " + KEY_DATE + " TEXT, " + KEY_TIME
-					+ " TEXT, " + KEY_VENUE + " TEXT, " + KEY_ORGANISATIONID
+					+ " TEXT, " + KEY_VENUE + " TEXT, " + KEY_ORGANISATIONNAME
 					+ " TEXT, " + KEY_EVENTID + " TEXT, " + KEY_CLUSTERID
 					+ " TEXT, " + KEY_CLUSTERNAME + " TEXT, " + KEY_DELETE
 					+ " TEXT, " + KEY_UPDATE + " TEXT, " + KEY_DESC + " TEXT);");
@@ -93,7 +93,7 @@ public class EventDb {
 		cv.put(KEY_TIME, time);
 		cv.put(KEY_DESC, desc);
 		cv.put(KEY_VENUE, venue);
-		cv.put(KEY_ORGANISATIONID, org);
+		cv.put(KEY_ORGANISATIONNAME, org);
 		cv.put(KEY_EVENTID, eventid);
 		cv.put(KEY_CLUSTERID, clusterid);
 		cv.put(KEY_CLUSTERNAME, clustername);
@@ -165,7 +165,7 @@ public class EventDb {
 		// TODO Auto-generated method stub
 		String[] columns = new String[] { KEY_CLUSTERNAME };
 		List docList = new ArrayList<String>();
-		Cursor m = ourDatabase.query(DATABASE_TABLE, columns, "_orgid='"
+		Cursor m = ourDatabase.query(DATABASE_TABLE, columns, "_orgname='"
 				+ orgid + "'", null, KEY_CLUSTERNAME, null, KEY_CLUSTERNAME
 				+ " ASC");
 		int iEvent = m.getColumnIndex(KEY_CLUSTERNAME);
@@ -181,11 +181,23 @@ public class EventDb {
 	public List getOrgList() {
 		// TODO Auto-generated method stub
 
+//		List docList = new ArrayList<String>();
+//
+//		docList.add("Admin");
+//		docList.add("Festember");
+//		docList.add("Pragyan");
+//
+//		return docList;
+		String[] columns = new String[] { KEY_ORGANISATIONNAME };
 		List docList = new ArrayList<String>();
+		Cursor m = ourDatabase.query(DATABASE_TABLE, columns, null, null, KEY_ORGANISATIONNAME, null, KEY_ORGANISATIONNAME
+				+ " ASC");
+		int iEvent = m.getColumnIndex(KEY_ORGANISATIONNAME);
 
-		docList.add("Admin");
-		docList.add("Festember");
-		docList.add("Pragyan");
+		for (m.moveToFirst(); !m.isAfterLast(); m.moveToNext()) {
+
+			docList.add(m.getString(iEvent));
+		}
 
 		return docList;
 	}

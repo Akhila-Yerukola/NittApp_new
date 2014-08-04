@@ -34,10 +34,8 @@ public class TempActivity extends Activity {
 
 		Intent event = getIntent();
 		Log.e("Activity", "Called!");
-		eName = event.getStringExtra("name");
-		eTime = event.getStringExtra("time");
-		eDate = event.getStringExtra("date");
-		eLoc = event.getStringExtra("venue");
+		eName = event.getStringExtra("text");
+		
 		notif = new NotificationDB(TempActivity.this);
 
 		// name.setText(eName);
@@ -84,14 +82,13 @@ public class TempActivity extends Activity {
 					length = events.size();
 
 					Log.e("Events:", events.toString());
-					
-
 					Log.e("hour", Integer.toString(hr - 1));
 					Log.e("min", Integer.toString(min));
 					Log.e("date", Integer.toString(date));
 					Log.e("month", Integer.toString(month));
 					Log.e("year", Integer.toString(year));
 
+					
 					calendar = Calendar.getInstance();
 					calendar.set(Calendar.DAY_OF_MONTH, date);
 					calendar.set(Calendar.MONTH, month - 1);

@@ -15,6 +15,7 @@ public class EventDetails extends Activity {
 	EventDb events;
 	List<HashMap<String,String>> list;
    
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
